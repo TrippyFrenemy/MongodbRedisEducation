@@ -7,6 +7,8 @@ This application provides an interface to search for authors and quotes in a dat
 - Search for authors by name with a partial match.
 - Search for quotes by tag with a partial match.
 - Caching of search results in Redis for quick retrieval.
+- Scraping the site http://quotes.toscrape.com to search for new authors and their quotes
+
 
 ## Prerequisites
 
@@ -15,6 +17,7 @@ Before you begin, ensure you have met the following requirements:
 - You have installed Python 3.11 or above.
 - You have installed MongoDB and it's running on the default port.
 - You have installed Redis and it's running on the default port.
+- You have installed Scrapy.
 
 ## Installing Authors and Quotes Search Application
 
@@ -31,17 +34,20 @@ To use the application, follow these steps:
     ```
     python main.py
     ```
+
 2. Update data on DB:
    ```
    python load_from_json.py
    ```
    Caution: use the file structure below
 
-3. When prompted, input your search command followed by a colon and the search term. For example:
+3. When prompted, enter the command `run` or `run spider` to find information about new quotes and their authors
+
+4. When prompted, input your search command followed by a colon and the search term. For example:
 - To search for an author named "Steve Martin", enter: `name:Steve Martin`
 - To search for quotes with the tag "life", enter: `tag:life`
 
-4. If you want to perform a search with a partial term, you can use:
+5. If you want to perform a search with a partial term, you can use:
 - `name:st` for authors with names starting with "st"
 - `tag:li` for tags starting with "li"
 

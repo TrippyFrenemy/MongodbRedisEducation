@@ -2,6 +2,10 @@ from redis import Redis
 import re
 import json
 from models import Author, Quote
+from scrapy.crawler import CrawlerProcess
+from scrapy.utils.project import get_project_settings
+from quotes_project.quotes_project.spiders.quotes_spider import QuotesSpider
+
 
 # Створення клієнта Redis
 redis_client = Redis(host='localhost', port=6379, db=0, decode_responses=True)
@@ -50,11 +54,20 @@ def search_quotes(command, value):
     return quotes_list
 
 
+def run_spider():
+    process = CrawlerProcess(get_project_settings())
+    process.crawl(QuotesSpider)
+    process.start()
+
+
 # Головний цикл
 while True:
     input_data = input('Введіть команду: ').strip()
     if input_data.lower() == 'exit':
         break
+    elif input_data.lower() in ['run spider', 'run']:
+        run_spider()
+        continue
 
     try:
         command, value = input_data.split(':', 1)

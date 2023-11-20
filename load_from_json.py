@@ -11,23 +11,27 @@ def load_json_data(file_path):
 # Завантаження авторів
 authors_data = load_json_data('authors.json')
 for author_data in authors_data:
-    author = Author(
-        fullname=author_data['fullname'],
-        born_date=author_data['born_date'],
-        born_location=author_data['born_location'],
-        description=author_data['description']
-    )
-    author.save()  # збереження автора у базі даних
+    existing_author = Author.objects(fullname=author_data["fullname"]).first()
+    if not existing_author:
+        author = Author(
+            fullname=author_data['fullname'],
+            born_date=author_data['born_date'],
+            born_location=author_data['born_location'],
+            description=author_data['description']
+        )
+        author.save()  # збереження автора у базі даних
 
 # Завантаження цитат
 quotes_data = load_json_data('quotes.json')
 for quote_data in quotes_data:
     author = Author.objects(fullname=quote_data['author']).first()  # знаходимо автора у базі
     if author:
-        quote = Quote(
-            tags=quote_data['tags'],
-            author=author,
-            quote=quote_data['quote']
-        )
-        quote.save()  # збереження цитати у базі даних
+        existing_quote = Quote.objects(quote=quote_data['quote']).first()
+        if not existing_quote:
+            quote = Quote(
+                tags=quote_data['tags'],
+                author=author,
+                quote=quote_data['quote']
+            )
+            quote.save()  # збереження цитати у базі даних
 
